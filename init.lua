@@ -3,6 +3,8 @@ vim.g.loaded_netrwPlugin = 1
 require('plugins')
 require('setting')
 require('map')
+
+--require("buffer_line")
 require('ntree')
 require('test')
 require('vue')
@@ -16,11 +18,16 @@ require('pyrights')
 require('debug')
 require('sitter')
 require('saga')
-
+require('noicer')
 require('inlay_hint')
 
 require('null')
+require("which_key")
 
+--require("buffer_line")
+
+require("buf")
+--require("dad_bod")
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'

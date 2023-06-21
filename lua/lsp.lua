@@ -5,11 +5,11 @@ require("mason-lspconfig").setup()
 --  require'lspconfig'.pyright.setup{}
 
  -- require'lspconfig'.clangd.setup{}
- require('lspconfig').sqls.setup{
-    on_attach = function(client, bufnr)
-        require('sqls').on_attach(client, bufnr)
-    end
-}
+ --require('lspconfig').sqls.setup{
+    --on_attach = function(client, bufnr)
+        --require('sqls').on_attach(client, bufnr)
+    --end
+--}
 
 -- Lua
 require("lsp-colors").setup({

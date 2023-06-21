@@ -1,7 +1,6 @@
 
 
 
-
 -- cmp autocomplete 
 
 local cmp = require'cmp'
@@ -35,6 +34,7 @@ cmp.setup({
       { name = 'nvim_lua', keyword_length = 2},
       { name = 'buffer', keyword_length = 2 },
       { name = 'vsnip' },
+      { name = 'orgmode' },
       { name = 'luasnip'}, -- For luasnip users.
  },
  snippet = {

@@ -26,7 +26,8 @@ use { "tpope/vim-surround", event = "BufReadPre" }
   use 'rhysd/git-messenger.vim'
   use 'marko-cerovac/material.nvim'
  -- require('material').set()
-  use 'nanotee/sqls.nvim'
+
+
 -- plenary setup
 
 use "nvim-lua/plenary.nvim"
@@ -94,6 +95,7 @@ use 'mfussenegger/nvim-lint'
 
 --lsp colors
 use 'folke/lsp-colors.nvim'
+
 --vim commentary
 --
 --
@@ -154,7 +156,8 @@ requires = {
    highlight = {
     enable = true,
       disable = { "ruby" }
-   }
+   },
+   
   }
 
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -204,6 +207,7 @@ use {
 -- Dracula theme for styling
  use 'Mofiqul/dracula.nvim'
 
+use ({ 'projekt0n/github-nvim-theme' })
 --todo highlight
 --
 use {
@@ -222,13 +226,23 @@ use {
 --vim-doge 
 --
 use {
-  'kkoomen/vim-doge',
+ 'kkoomen/vim-doge',
   run = ':call doge#install()'
 }
-
+use {
+    "danymat/neogen",
+    config = function()
+        require('neogen').setup {
+          enabled=true
+        }
+    end,
+    requires = "nvim-treesitter/nvim-treesitter",
+    -- Uncomment next line if you want to follow only stable versions
+    tag = "*"
+}
 
 use {
-  "folke/trouble.nvim",
+ "folke/trouble.nvim",
   requires = "nvim-tree/nvim-web-devicons",
   config = function()
     require("trouble").setup {
@@ -238,5 +252,104 @@ use {
     }
   end
 }
+
+
+use({
+  "folke/noice.nvim",
+  config = function()
+    require("noice").setup({
+    --    -- add any options here
+    })
+  end,
+  requires = {
+    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+    "MunifTanjim/nui.nvim",
+  --  -- OPTIONAL:
+  --  --   `nvim-notify` is only needed, if you want to use the notification view.
+  --  --   If not available, we use `mini` as the fallback
+    "rcarriga/nvim-notify",
+    }
+})
+
+
+
+use {
+  "folke/which-key.nvim",
+  config = function()
+    vim.o.timeout = true
+    vim.o.timeoutlen = 300
+    require("which-key").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  end
+}
+
+
+
+-- Database
+use {
+  "tpope/vim-dadbod",
+  opt = true,
+  requires = {
+    "kristijanhusak/vim-dadbod-ui",
+    "kristijanhusak/vim-dadbod-completion",
+  },
+  config = function()
+    require("config.dadbod").setup()
+  end,
+  cmd = { "DBUIToggle", "DBUI", "DBUIAddConnection", "DBUIFindBuffer", "DBUIRenameBuffer", "DBUILastQueryInfo" },
+}
+
+--neorg for file org
+
+--use {
+   -- "nvim-neorg/neorg",
+   -- config = function()
+       -- require('neorg').setup {
+          --  load = {
+              --  ["core.defaults"] = {}, -- Loads default behaviour
+              --  ["core.concealer"] = {}, -- Adds pretty icons to your documents
+            --    ["core.dirman"] = { -- Manages Neorg workspaces
+                  --  config = {
+                     --   workspaces = {
+                       --     notes = "~/notes",
+                      --  },
+                  --  },
+              --  },
+          --  },
+     --   }
+ --   end,
+  --  run = ":Neorg sync-parsers",
+   -- requires = "nvim-lua/plenary.nvim",
+--}
+
+
+
+-- indentation 
+--
+use "lukas-reineke/indent-blankline.nvim"
+
+-- bufferline setup 
+use {'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons'}
+--use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
+
+-- commenter
+use {
+    'numToStr/Comment.nvim',
+    config = function()
+        require('Comment').setup()
+    end
+  }
+
+  -- org mode 
+  use {'nvim-orgmode/orgmode', config = function()
+  require('orgmode').setup({
+  org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
+  org_default_notes_file = '~/Dropbox/org/refile.org',
+})
+end
+} 
 
 end )

@@ -85,9 +85,15 @@ vim.cmd([[
 ]])
 -- colorscheme
 vim.o.background = 'dark'
-vim.cmd[[colorscheme dracula]]
+-- vim.cmd[[colorscheme dracula]]
 -- vim.cmd('colorscheme Tomorrow-Night')
+vim.cmd('colorscheme github_dark_tritanopia')
 vim.g.material_style = "palenight"
 
 vim.g.python3_host_prog = "/Users/grzegorz/.asdf/shims/python3"
 vim.g.python_host_prog = "/Users/grzegorz/.asdf/shims/python2"
+
+-- bufferline setup
+--
+vim.opt.termguicolors = true
+--require("bufferline").setup {}

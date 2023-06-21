@@ -21,6 +21,7 @@ end
 local sources = {
   -- formatting
   b.formatting.prettierd,
+  b.formatting.prettier,
   b.formatting.shfmt,
   b.formatting.fixjson,
   b.formatting.black.with { extra_args = { "--fast" } },
@@ -48,7 +49,7 @@ function M.setup(opts)
   nls.setup {
     -- debug = true,
     debounce = 150,
-    save_after_format = false,
+    save_after_format = true,
     sources = sources,
     on_attach = opts.on_attach,
     root_dir = nls_utils.root_pattern ".git",
