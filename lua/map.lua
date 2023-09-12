@@ -31,6 +31,12 @@ vmap('/', '/\\v')
 -- don't jump when using *
 nmap('*', '*<c-o>')
 
+
+
+
+--Map Ctrl+/ to toggle comments with Vim-Commentary
+nmap( '/', '<cmd>Commentary<cr>')
+imap( '<C-/>', '[[:Commentary<CR>]]')
 -- keep search matches in the middle of the window
 nmap('n', 'nzzzv')
 nmap('N', 'Nzzzv')
@@ -62,7 +68,7 @@ nmap('<C-l>', '<C-w>l')
 vmap('<', '<gv')
 vmap('>', '>gv')
 
--- home and end line in command mode
+
 cmap('<C-a>', '<Home>')
 cmap('<C-e>', '<End>')
 

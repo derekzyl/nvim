@@ -27,7 +27,7 @@ use { "tpope/vim-surround", event = "BufReadPre" }
   use 'marko-cerovac/material.nvim'
  -- require('material').set()
 
-
+  use 'pocco81/auto-save.nvim'
 -- plenary setup
 
 use "nvim-lua/plenary.nvim"
@@ -44,7 +44,9 @@ use "nvim-lua/plenary.nvim"
   -- general dev
   
 
-use 'williamboman/mason.nvim'
+use {'williamboman/mason.nvim', opts={
+  ensure_installed={"clangd"}
+}}
 use 'williamboman/mason-lspconfig.nvim'
 use {'neovim/nvim-lspconfig',
 
@@ -99,7 +101,7 @@ use 'folke/lsp-colors.nvim'
 --vim commentary
 --
 --
-use { "tpope/vim-commentary", keys = { "gc", "gcc", "gbc" }, disable = false }
+use { "tpope/vim-commentary", keys = { "gc", "/", "gbc", "gcc"}, disable = false }
 
 -- dap
 use 'mfussenegger/nvim-dap'
