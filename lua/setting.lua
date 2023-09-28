@@ -1,6 +1,6 @@
 HOME = os.getenv("HOME")
 
-vim.g.mapleader = '+'
+vim.g.mapleader = ','
 vim.g.maplocalleader = '\\'
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
 -- basic settings
@@ -99,4 +99,5 @@ vim.opt.termguicolors = true
 --require("bufferline").setup {}
 --
 --
+vim.opt.clipboard = 'unnamed'
 vim.api.nvim_set_keymap("n", "<leader>n", ":ASToggle<CR>", {})

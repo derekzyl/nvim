@@ -35,8 +35,8 @@ nmap('*', '*<c-o>')
 
 
 --Map Ctrl+/ to toggle comments with Vim-Commentary
-nmap( '/', '<cmd>Commentary<cr>')
-imap( '<C-/>', '[[:Commentary<CR>]]')
+nmap( '/', 'gc')
+imap( '<c-/>', 'gc')
 -- keep search matches in the middle of the window
 nmap('n', 'nzzzv')
 nmap('N', 'Nzzzv')
