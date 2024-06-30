@@ -15,7 +15,7 @@ return require('packer').startup(function(use)
 
 -- vim surround
 use { "tpope/vim-surround", event = "BufReadPre" }
-
+use 'wakatime/vim-wakatime'
   -- common
   use 'tpope/vim-fugitive' -- Git commands
   use 'vim-airline/vim-airline' -- powerline
@@ -26,8 +26,22 @@ use { "tpope/vim-surround", event = "BufReadPre" }
   use 'rhysd/git-messenger.vim'
   use 'marko-cerovac/material.nvim'
  -- require('material').set()
+ --
+ --
+ --
 
-  use 'pocco81/auto-save.nvim'
+ -- we want to try this ai tool
+use    "Exafunction/codeium.nvim"
+    
+  use({
+	"Pocco81/auto-save.nvim",
+	config = function()
+		 require("auto-save").setup {
+			-- your config goes here
+			-- or just leave it empty :)
+		 }
+	end,
+})
 -- plenary setup
 
 use "nvim-lua/plenary.nvim"
@@ -45,7 +59,7 @@ use "nvim-lua/plenary.nvim"
   
 
 use {'williamboman/mason.nvim', opts={
-  ensure_installed={"clangd"}
+  ensure_installed={"clangd", "rust_analyzer"}
 }}
 use 'williamboman/mason-lspconfig.nvim'
 use {'neovim/nvim-lspconfig',
@@ -345,13 +359,21 @@ use {
     end
   }
 
-  -- org mode 
-  use {'nvim-orgmode/orgmode', config = function()
-  require('orgmode').setup({
-  org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
-  org_default_notes_file = '~/Dropbox/org/refile.org',
-})
+
+
+require('orgmode').setup_ts_grammar()
+
+use {'nvim-orgmode/orgmode', config = function()
+  require('orgmode').setup{}
 end
-} 
+}
+  -- org mode 
+  -- use {'nvim-orgmode/orgmode', config = function()
+  -- require('orgmode').setup({
+  -- org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
+  -- org_default_notes_file = '~/Dropbox/org/refile.org',
+-- })
+-- -- end
+-- } 
 
 end )

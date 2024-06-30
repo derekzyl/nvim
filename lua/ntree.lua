@@ -20,7 +20,30 @@ require("nvim-tree").setup({
   renderer = {
     group_empty = true,
   },
-  filters = {
-    dotfiles = true,
-  },
+
+
+update_cwd = true,
+open_on_setup = false,
+open_on_setup_file = false,
+actions = {
+open_file = {
+resize_window = true,
+},
+},
+
+update_focused_file = {
+enable = true,
+update_cwd = true,
+},
+filters = {
+dotfiles = false,
+},
+diagnostics = {
+enable = true,
+},
+
+
+
+
+
 })
