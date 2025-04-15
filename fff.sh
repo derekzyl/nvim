@@ -144,10 +144,8 @@ change_repo() {
     echo -e "\n${CYAN}═══ REPOSITORY CONFIGURATION ═══${NC}"
     echo -e "${BLUE}Updating Termux repositories...${NC}"
     
-    termux-change-repo &> /dev/null &
-    local repo_pid=$!
-    show_progress $repo_pid "Updating repositories..."
-    wait $repo_pid
+    termux-change-repo 
+   
     
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✅ Repository updated successfully${NC}"
@@ -1146,7 +1144,7 @@ main() {
     echo -e "${MAGENTA}╚════════════════════════════════════════════╝${NC}"
     echo
     echo -e "${BLUE}This script will set up an optimal development environment in Termux.${NC}"
-    echo -e "${YELLOW}Note: It will preserve your existing Neovim configuration.${NC}"
+    echo -e "${YELLOW}Note: It will install neovim setup.${NC}"
     echo
     
     # Ask for confirmation
