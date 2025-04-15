@@ -1165,7 +1165,7 @@ main() {
     update_termux
     
     # Install core packages
-    core_packages=("python" "nodejs" "git" "curl" "openssl" "openssh" "wget" "gh" "build-essential" "tmux")
+    core_packages=("python" "nodejs" "git" "neovim" "curl" "openssl" "openssh" "wget" "gh" "build-essential" "tmux")
     install_packages "Core" "${core_packages[@]}"
     
     # Setup important components
@@ -1174,38 +1174,32 @@ main() {
     setup_python_env
     setup_shell_config
     setup_tmux
-    
+    setup_neovim_extras
     # Install optional tools based on user selection
     echo -e "\n${CYAN}═══ OPTIONAL COMPONENTS ═══${NC}"
     echo "Select which additional components to install:"
     echo "1) Terminal productivity tools (recommended)"
-    echo "2) Neovim language server support"
-    echo "3) Backup utility"
-    echo "4) Termux beautification"
-    echo "5) All of the above"
-    echo "6) None of the above"
+    echo "2) Backup utility"
+    echo "3) Termux beautification"
+    echo "4) All of the above"
+    echo "5) None of the above"
     read -p "> " optional_components
     
     case $optional_components in
-        1|5)
+        1|4)
             install_terminal_tools
             ;;
     esac
     
-    case $optional_components in
-        2|5)
-            setup_neovim_extras
-            ;;
-    esac
     
     case $optional_components in
-        3|5)
+    2|4)
             setup_backup_utility
             ;;
     esac
     
     case $optional_components in
-        4|5)
+        3|4)
             install_termux_beauty
             ;;
     esac
