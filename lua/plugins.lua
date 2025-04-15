@@ -216,8 +216,7 @@ use {
   'nvim-tree/nvim-tree.lua',
   requires = {
     'nvim-tree/nvim-web-devicons', -- optional, for file icons
-  },
-  tag = 'nightly' -- optional, updated every week. (see issue #1193)
+  }
 }
 
 -- Dracula theme for styling
@@ -361,12 +360,12 @@ use {
 
 
 
-require('orgmode').setup_ts_grammar()
+-- require('orgmode').setup_ts_grammar()
 
-use {'nvim-orgmode/orgmode', config = function()
-  require('orgmode').setup{}
-end
-}
+-- use {'nvim-orgmode/orgmode', config = function()
+--   require('orgmode').setup{}
+-- end
+-- }
   -- org mode 
   -- use {'nvim-orgmode/orgmode', config = function()
   -- require('orgmode').setup({

@@ -2,7 +2,7 @@
 
 -- this part is telling Neovim to use the lsp server
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'clangd', 'tailwindcss','eslint','html','solc' }
+local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'clangd', 'eslint','html' }
 for _, lsp in pairs(servers) do
   if lsp == 'pyright' then
     require('lspconfig')[lsp].setup{
