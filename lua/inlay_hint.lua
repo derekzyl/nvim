@@ -1,10 +1,12 @@
 local M = {}
 
 
+
 local ih = require("inlay-hints")
-local lspconfig = require("lspconfig")
-lspconfig.pyright.setup {}
-lspconfig.tsserver.setup({
+
+vim.lsp.config("pyright")
+vim.lsp.config("tsserver",
+{
   on_attach = function(c, b)
     ih.on_attach(c, b)
   end,
@@ -37,7 +39,7 @@ lspconfig.tsserver.setup({
 
 
 
-lspconfig.gopls.setup({
+vim.lsp.config("gopls",{
   on_attach = function(c, b)
     ih.on_attach(c, b)
   end,
