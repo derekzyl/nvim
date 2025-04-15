@@ -5,7 +5,7 @@ require('setting')
 require('map')
 
 --require("buffer_line")
--- require('ntree')
+require('ntree')
 require('test')
 require('vue')
 require('autocomplete')
