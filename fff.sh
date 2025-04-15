@@ -1170,7 +1170,7 @@ main() {
     
     # Setup important components
     setup_git_config
-    setup_ssh_keys
+    # setup_ssh_keys
     setup_python_env
     setup_shell_config
     setup_tmux

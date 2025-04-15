@@ -87,7 +87,7 @@ vim.cmd([[
 vim.o.background = 'dark'
 -- vim.cmd[[colorscheme dracula]]
 -- vim.cmd('colorscheme Tomorrow-Night')
-vim.cmd('colorscheme github_dark_tritanopia')
+-- vim.cmd('colorscheme github_dark_tritanopia')
 vim.g.material_style = "palenight"
 
 vim.g.python3_host_prog = "/Users/grzegorz/.asdf/shims/python3"
