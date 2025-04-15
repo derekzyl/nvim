@@ -757,8 +757,12 @@ fi
     if [ ! -d ~/.config/nvim/pack/nvim/start/nvim-lspconfig ]; then
         echo "Setting up nvim-lspconfig..."
         mkdir -p ~/.config/nvim/pack/nvim/start/
-        git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig
+        cd ~/.config/nvim/pack/nvim/start/
+        git clone https://github.com/neovim/nvim-lspconfig
         handle_error $? "Failed to clone nvim-lspconfig" false
+
+        else
+        echo "lspconfig already set"
     fi
     
     echo -e "${GREEN}✅ Neovim language servers installed${NC}"

@@ -5,7 +5,7 @@ local M = {}
 local ih = require("inlay-hints")
 
 vim.lsp.config("pyright")
-vim.lsp.config("tsserver",
+vim.lsp.config("ts_ls",
 {
   on_attach = function(c, b)
     ih.on_attach(c, b)

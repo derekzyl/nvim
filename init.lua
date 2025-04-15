@@ -1,7 +1,7 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.lsp.enable('pyright')
-vim.lsp.enable('tsserver')
+vim.lsp.enable('ts_ls')
 vim.lsp.enable('gopls')
 require('plugins')
 require('setting')
