@@ -697,8 +697,8 @@ install_terminal_tools() {
 
 # Setup Neovim LSP plugins
 setup_neovim_extras() {
-    echo -e "\n${CYAN}═══ NEOVIM EXTRAS ═══${NC}"
-    echo -e "${BLUE}Setting up extra Neovim language support...${NC}"
+    echo -e "\n${CYAN}═══ NEOVIM SETUP ═══${NC}"
+    echo -e "${BLUE}Setting up  Neovim language support...${NC}"
     
     # Install language servers via npm
     echo "Installing language servers..."
@@ -713,10 +713,12 @@ setup_neovim_extras() {
             echo -e "${YELLOW}⚠️  Failed to install $package${NC}"
         fi
     done
+
+
    if [ ! -d ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
     git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim || { echo "Error cloning Neovim"; exit 1; }
 else
-    echo "Destination path '~/.local/share/nvim/site/pack/packer/start/packer.nvim' already exists and is not an empty directory. Skipping clone."
+    echo "Packer.nvim already installed, skipping clone."
 fi 
 
 cd
