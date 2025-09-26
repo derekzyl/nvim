@@ -26,6 +26,7 @@ require('inlay_hint')
 
 require('null')
 require("which_key")
+require('codeium')
 
 --require("buffer_line")
 

@@ -31,7 +31,14 @@ use 'wakatime/vim-wakatime'
  --
 
  -- we want to try this ai tool
-use    "Exafunction/codeium.nvim"
+use {
+  "Exafunction/codeium.nvim",
+  config = function()
+    require("codeium").setup({
+      -- your config goes here
+    })
+  end
+}
     
   use({
 	"Pocco81/auto-save.nvim",
