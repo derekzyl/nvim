@@ -1,15 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup()
---  require'lspconfig'.tsserver.setup{}
-
---  require'lspconfig'.pyright.setup{}
-
- -- require'lspconfig'.clangd.setup{}
- --require('lspconfig').sqls.setup{
-    --on_attach = function(client, bufnr)
-        --require('sqls').on_attach(client, bufnr)
-    --end
---}
+-- LSP configurations are now handled in pyrights.lua and inlay_hint.lua
 
 -- Lua
 require("lsp-colors").setup({
