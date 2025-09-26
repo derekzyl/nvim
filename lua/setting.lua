@@ -67,6 +67,14 @@ vim.cmd([[
   au BufRead,BufNewFile *.ppmd        set ft=mkd tw=80 syntax=markdown
   au BufRead,BufNewFile *.markdown    set ft=mkd tw=80 syntax=markdown
   au BufRead,BufNewFile *.slimbars    set syntax=slim
+  
+  " Ensure buffers are modifiable for regular files
+  au BufRead,BufNewFile * if &buftype == "" | setlocal modifiable | endif
+  
+  " Fix for nvim-tree and other special buffers
+  au FileType NvimTree setlocal modifiable
+  au FileType help setlocal modifiable
+  au FileType qf setlocal modifiable
 ]])
 
 -- Commands mode
@@ -101,3 +109,5 @@ vim.opt.termguicolors = true
 --
 vim.opt.clipboard = 'unnamed'
 vim.api.nvim_set_keymap("n", "<leader>n", ":ASToggle<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>m", ":setlocal modifiable<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>M", ":setlocal nomodifiable<CR>", {})

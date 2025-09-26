@@ -21,6 +21,10 @@ require("nvim-tree").setup({
     
     -- Custom mappings
     vim.keymap.set('n', 'u', api.tree.change_root_to_parent, opts('Up'))
+    
+    -- Ensure the buffer is properly configured
+    vim.bo[bufnr].modifiable = false  -- nvim-tree should not be modifiable
+    vim.bo[bufnr].buftype = 'nofile'  -- Set proper buffer type
   end,
   renderer = {
     group_empty = true,
