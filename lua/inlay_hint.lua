@@ -16,8 +16,7 @@ vim.lsp.config("pyright", {
     }
   }
 })
-vim.lsp.config("ts_ls",
-{
+vim.lsp.config("ts_ls", {
   on_attach = function(c, b)
     ih.on_attach(c, b)
   end,
@@ -50,7 +49,7 @@ vim.lsp.config("ts_ls",
 
 
 
-vim.lsp.config("gopls",{
+vim.lsp.config("gopls", {
   on_attach = function(c, b)
     ih.on_attach(c, b)
   end,

@@ -11,7 +11,7 @@ end
 
 for _, lsp in pairs(servers) do
   if lsp == 'pyright' then
-    vim.lsp.config[lsp].setup{
+    vim.lsp.config(lsp, {
       on_attach=on_attach,
       flags={
         debounce_text_changes=150
@@ -24,15 +24,15 @@ for _, lsp in pairs(servers) do
           }
         }
       }
-    }
+    })
   else
-    vim.lsp.config[lsp].setup {
+    vim.lsp.config(lsp, {
         on_attach = on_attach,
         flags = {
           debounce_text_changes = 150,
         },
         capabilities= capabilities
-    }
+    })
   end 
 end
 
