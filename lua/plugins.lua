@@ -31,7 +31,7 @@ use 'wakatime/vim-wakatime'
  --
 
  -- we want to try this ai tool
-use "Exafunction/codeium.nvim"
+use "Exafunction/codeium.vim"
     
   use({
 	"Pocco81/auto-save.nvim",
