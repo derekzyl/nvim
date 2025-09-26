@@ -1,11 +1,21 @@
+-- ===========================================
+-- 📱 MOBILE TERMUX NEOVIM CONFIGURATION 📱
+-- ===========================================
+
+-- Load mobile optimizations first
+require('mobile')
+
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.lsp.enable('pyright')
 vim.lsp.enable('ts_ls')
 vim.lsp.enable('gopls')
-require('plugins')
+
+-- Load configurations
+require('mobile_plugins')  -- Mobile-optimized plugins
 require('setting')
-require('map')
+require('mobile_keys')     -- Mobile-optimized keybindings
+require('mobile_theme')    -- Mobile-optimized theme
 
 --require("buffer_line")
 require('ntree')
