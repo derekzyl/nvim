@@ -51,12 +51,14 @@ return require('packer').startup(function(use)
   }
 
   -- Wakatime (mobile-optimized)
-  use {
+  use { 
     'wakatime/vim-wakatime',
     config = function()
       -- Mobile-optimized wakatime settings
-      vim.g.wakatime_PythonBinary = 'python3'
+      vim.g.wakatime_PythonBinary = '/usr/bin/python3'
+      vim.g.wakatime_CLIPath = '/data/data/com.termux/files/usr/bin/wakatime'
       vim.g.wakatime_DisableOnStartup = 0
+      vim.g.wakatime_ScreenRedraw = 1
     end
   }
 
@@ -456,97 +458,14 @@ return require('packer').startup(function(use)
     run = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
+        -- Install parsers on-demand when opening files
+        auto_install = true,
         ensure_installed = {
+          -- Only install essential parsers by default
           'lua',
           'vim',
-          'bash',
-          'python',
-          'javascript',
-          'typescript',
-          'html',
-          'css',
-          'json',
-          'yaml',
-          'markdown',
-          'ruby',
-          'go',
-          'rust',
-          'java',
-          'c',
-          'cpp',
-          'php',
-          'sql',
-          'dockerfile',
-          'gitignore',
-          'make',
-          'cmake',
-          'toml',
-          'ini',
-          'xml',
-          'scss',
-          'sass',
-          'less',
-          'vue',
-          'svelte',
-          'astro',
-          'solidity',
-          'zig',
-          'nim',
-          'dart',
-          'kotlin',
-          'swift',
-          'scala',
-          'haskell',
-          'ocaml',
-          'fsharp',
-          'clojure',
-          'elixir',
-          'erlang',
-          'perl',
-          'r',
-          'matlab',
-          'julia',
-          'lisp',
-          'scheme',
-          'racket',
-          'prolog',
-          'ada',
-          'fortran',
-          'cobol',
-          'pascal',
-          'assembly',
-          'verilog',
-          'vhdl',
-          'systemverilog',
-          'tcl',
-          'awk',
-          'sed',
-          'fish',
-          'zsh',
-          'powershell',
-          'batch',
           'vimdoc',
           'query',
-          'regex',
-          'comment',
-          'diff',
-          'gitcommit',
-          'git_rebase',
-          'gitattributes',
-          'gitconfig',
-          'gitignore',
-          'gitsendemail',
-          'gitsigns',
-          'help',
-          'man',
-          'markdown_inline',
-          'nix',
-          'proto',
-          'pug',
-          'rst',
-          'terraform',
-          'yaml',
-          'zig',
         },
         highlight = {
           enable = true,
@@ -903,7 +822,8 @@ return require('packer').startup(function(use)
     'rcarriga/nvim-dap-ui',
     requires = {'mfussenegger/nvim-dap'},
     config = function()
-      require('dapui').setup({
+      local dapui = require('dapui')
+      dapui.setup({
         icons = { expanded = '▾', collapsed = '▸', current_frame = '▸' },
         mappings = {
           expand = { '<CR>', '<2-LeftMouse>' },
@@ -962,6 +882,18 @@ return require('packer').startup(function(use)
           max_value_lines = 100,
         },
       })
+      
+      -- Auto open/close dapui
+      local dap = require('dap')
+      dap.listeners.after.event_initialized['dapui_config'] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated['dapui_config'] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited['dapui_config'] = function()
+        dapui.close()
+      end
     end
   }
 
