@@ -34,7 +34,7 @@ require('saga')
 -- require('noicer')
 -- require('inlay_hint')
 
-require('null')
+-- require('null')
 require("which_key")
 require('codeium')
 

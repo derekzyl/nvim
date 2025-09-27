@@ -297,49 +297,49 @@ return require('packer').startup(function(use)
   use 'williamboman/mason-lspconfig.nvim'
 
   -- Null-ls for formatting and linting
-  use {
-    'jose-elias-alvarez/null-ls.nvim',
-    config = function()
-      local null_ls = require('null-ls')
-      null_ls.setup({
-        sources = {
-          -- Formatting
-          null_ls.builtins.formatting.stylua,
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.black,
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.shfmt,
-          null_ls.builtins.formatting.rustfmt,
-          null_ls.builtins.formatting.gofmt,
-          null_ls.builtins.formatting.clang_format,
+  -- use {
+  --   'jose-elias-alvarez/null-ls.nvim',
+  --   config = function()
+  --     local null_ls = require('null-ls')
+  --     null_ls.setup({
+  --       sources = {
+  --         -- Formatting
+  --         null_ls.builtins.formatting.stylua,
+  --         null_ls.builtins.formatting.prettier,
+  --         null_ls.builtins.formatting.black,
+  --         null_ls.builtins.formatting.isort,
+  --         null_ls.builtins.formatting.shfmt,
+  --         null_ls.builtins.formatting.rustfmt,
+  --         null_ls.builtins.formatting.gofmt,
+  --         null_ls.builtins.formatting.clang_format,
           
-          -- Linting
-          null_ls.builtins.diagnostics.eslint_d,
-          null_ls.builtins.diagnostics.flake8,
-          null_ls.builtins.diagnostics.shellcheck,
-          null_ls.builtins.diagnostics.rubocop,
-          null_ls.builtins.diagnostics.golangci_lint,
+  --         -- Linting
+  --         null_ls.builtins.diagnostics.eslint_d,
+  --         null_ls.builtins.diagnostics.flake8,
+  --         null_ls.builtins.diagnostics.shellcheck,
+  --         null_ls.builtins.diagnostics.rubocop,
+  --         null_ls.builtins.diagnostics.golangci_lint,
           
-          -- Code actions
-          null_ls.builtins.code_actions.gitsigns,
-          null_ls.builtins.code_actions.eslint_d,
-        },
-        -- Mobile-optimized settings
-        debug = false,
-        update_in_insert = false,
-        on_attach = function(client, bufnr)
-          if client.supports_method('textDocument/formatting') then
-            vim.api.nvim_create_autocmd('BufWritePre', {
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format({ bufnr = bufnr })
-              end,
-            })
-          end
-        end,
-      })
-    end
-  }
+  --         -- Code actions
+  --         null_ls.builtins.code_actions.gitsigns,
+  --         null_ls.builtins.code_actions.eslint_d,
+  --       },
+  --       -- Mobile-optimized settings
+  --       debug = false,
+  --       update_in_insert = false,
+  --       on_attach = function(client, bufnr)
+  --         if client.supports_method('textDocument/formatting') then
+  --           vim.api.nvim_create_autocmd('BufWritePre', {
+  --             buffer = bufnr,
+  --             callback = function()
+  --               vim.lsp.buf.format({ bufnr = bufnr })
+  --             end,
+  --           })
+  --         end
+  --       end,
+  --     })
+  --   end
+  -- }
 
   -- Completion
   use {
