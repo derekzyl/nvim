@@ -20,7 +20,7 @@ require('mobile_theme')    -- Mobile-optimized theme
 --require("buffer_line")
 require('ntree')
 require('test')
-require('vue')
+-- require('vue')
 require('autocomplete')
 require('tel')
 require('lsp')
