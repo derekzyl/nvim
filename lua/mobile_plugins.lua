@@ -51,7 +51,7 @@ return require('packer').startup(function(use)
   }
 
   -- Wakatime (mobile-optimized)
- use 'wakatime/vim-wakatime'
+--  use 'wakatime/vim-wakatime'
 
 
   -- ===========================================
