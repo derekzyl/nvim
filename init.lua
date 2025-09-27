@@ -31,7 +31,7 @@ require('pyrights')
 require('debug')
 require('sitter')
 require('saga')
-require('noicer')
+-- require('noicer')
 require('inlay_hint')
 
 require('null')
