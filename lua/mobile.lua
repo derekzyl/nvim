@@ -293,9 +293,25 @@ if is_mobile() then
     print("==========================================")
   end
   
-  -- Add mobile help command
-  vim.api.nvim_create_user_command('MobileHelp', MobileHelp, {})
-  vim.keymap.set('n', '<leader>?', ':MobileHelp<CR>', { desc = 'Show mobile help' })
+-- Add mobile help command
+vim.api.nvim_create_user_command('MobileHelp', MobileHelp, {})
+vim.keymap.set('n', '<leader>?', ':MobileHelp<CR>', { desc = 'Show mobile help' })
+
+-- Auto-hover diagnostics for mobile
+vim.api.nvim_create_autocmd('CursorHold', {
+  pattern = '*',
+  callback = function()
+    local opts = {
+      focusable = false,
+      close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+      border = 'rounded',
+      source = 'always',
+      prefix = ' ',
+      scope = 'cursor',
+    }
+    vim.diagnostic.open_float(nil, opts)
+  end,
+})
   
   -- Mobile optimizations applied successfully
   

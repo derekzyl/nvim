@@ -1112,6 +1112,17 @@ return require('packer').startup(function(use)
         vim.cmd('Codeium')
         print('Codeium: Enabled. Run :Codeium Auth to authenticate.')
       end, { desc = 'Enable and setup Codeium' })
+      
+      -- Toggle Codeium on/off
+      vim.api.nvim_create_user_command('CodeiumToggle', function()
+        if vim.g.codeium_enabled == 1 then
+          vim.g.codeium_enabled = 0
+          print('Codeium: Disabled')
+        else
+          vim.g.codeium_enabled = 1
+          print('Codeium: Enabled')
+        end
+      end, { desc = 'Toggle Codeium on/off' })
     end
   }
 
