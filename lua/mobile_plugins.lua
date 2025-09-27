@@ -304,6 +304,51 @@ return require('packer').startup(function(use)
 
   use 'williamboman/mason-lspconfig.nvim'
 
+  -- Null-ls for formatting and linting
+  use {
+    'jose-elias-alvarez/null-ls.nvim',
+    config = function()
+      local null_ls = require('null-ls')
+      null_ls.setup({
+        sources = {
+          -- Formatting
+          null_ls.builtins.formatting.stylua,
+          null_ls.builtins.formatting.prettier,
+          null_ls.builtins.formatting.black,
+          null_ls.builtins.formatting.isort,
+          null_ls.builtins.formatting.shfmt,
+          null_ls.builtins.formatting.rustfmt,
+          null_ls.builtins.formatting.gofmt,
+          null_ls.builtins.formatting.clang_format,
+          
+          -- Linting
+          null_ls.builtins.diagnostics.eslint_d,
+          null_ls.builtins.diagnostics.flake8,
+          null_ls.builtins.diagnostics.shellcheck,
+          null_ls.builtins.diagnostics.rubocop,
+          null_ls.builtins.diagnostics.golangci_lint,
+          
+          -- Code actions
+          null_ls.builtins.code_actions.gitsigns,
+          null_ls.builtins.code_actions.eslint_d,
+        },
+        -- Mobile-optimized settings
+        debug = false,
+        update_in_insert = false,
+        on_attach = function(client, bufnr)
+          if client.supports_method('textDocument/formatting') then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr })
+              end,
+            })
+          end
+        end,
+      })
+    end
+  }
+
   -- Completion
   use {
     'hrsh7th/nvim-cmp',
@@ -820,7 +865,10 @@ return require('packer').startup(function(use)
 
   use {
     'rcarriga/nvim-dap-ui',
-    requires = {'mfussenegger/nvim-dap'},
+    requires = {
+      'mfussenegger/nvim-dap',
+      'nvim-neotest/nvim-nio',
+    },
     config = function()
       local dapui = require('dapui')
       dapui.setup({
@@ -904,7 +952,7 @@ return require('packer').startup(function(use)
   -- Noice for enhanced UI (mobile-optimized)
   use {
     'folke/noice.nvim',
-    event = 'VeryLazy',
+    event = 'VimEnter',
     requires = {
       'MunifTanjim/nui.nvim',
       'rcarriga/nvim-notify',
@@ -1032,16 +1080,27 @@ return require('packer').startup(function(use)
   -- MOBILE AI ASSISTANCE
   -- ===========================================
 
-  -- Codeium for AI assistance
-  use {
+  -- Codeium for AI assistance (mobile-optimized)
+  use { 
     'Exafunction/codeium.vim',
     config = function()
       -- Mobile-optimized Codeium settings
       vim.g.codeium_disable_bindings = 1
+      vim.g.codeium_no_map_tab = 1
+      
+      -- Set up keymaps
       vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
       vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
       vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
       vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+      
+      -- Auto-setup Codeium binary if not present
+      vim.defer_fn(function()
+        if vim.fn['codeium#GetStatusString']() == 'OFF' then
+          print('Codeium: Setting up binary...')
+          vim.cmd('Codeium')
+        end
+      end, 2000) -- Wait 2 seconds after startup
     end
   }
 
