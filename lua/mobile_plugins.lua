@@ -947,6 +947,19 @@ return require('packer').startup(function(use)
   -- MOBILE UI ENHANCEMENTS
   -- ===========================================
 
+  -- LSP colors for enhanced diagnostics
+  use {
+    'folke/lsp-colors.nvim',
+    config = function()
+      require('lsp-colors').setup({
+        Error = '#db4b4b',
+        Warning = '#e0af68',
+        Information = '#0db9d7',
+        Hint = '#10b981',
+      })
+    end
+  }
+
   -- Noice for enhanced UI (mobile-optimized)
   use {
     'folke/noice.nvim',

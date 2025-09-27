@@ -297,7 +297,7 @@ if is_mobile() then
   vim.api.nvim_create_user_command('MobileHelp', MobileHelp, {})
   vim.keymap.set('n', '<leader>?', ':MobileHelp<CR>', { desc = 'Show mobile help' })
   
-  print("📱 Mobile optimizations applied successfully!")
+  -- Mobile optimizations applied successfully
   
 else
   print("🖥️  Desktop mode detected - using standard configuration")

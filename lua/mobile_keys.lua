@@ -306,7 +306,7 @@ end
 vim.api.nvim_create_autocmd('VimEnter', {
   pattern = '*',
   callback = function()
-    print('📱 Mobile keybindings loaded! Use <leader>? for help')
+    -- Mobile keybindings loaded! Use <leader>? for help
   end,
 })
 
