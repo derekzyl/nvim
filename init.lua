@@ -32,7 +32,7 @@ require('debug')
 require('sitter')
 require('saga')
 -- require('noicer')
-require('inlay_hint')
+-- require('inlay_hint')
 
 require('null')
 require("which_key")
