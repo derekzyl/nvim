@@ -898,6 +898,81 @@ return require('packer').startup(function(use)
   }
 
   -- ===========================================
+  -- MOBILE UI ENHANCEMENTS
+  -- ===========================================
+
+  -- Noice for enhanced UI (mobile-optimized)
+  use {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    requires = {
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify',
+    },
+    config = function()
+      require('noice').setup({
+        lsp = {
+          -- Override markdown rendering so that **cmp** and other plugins use **Treesitter**
+          override = {
+            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+            ['vim.lsp.util.stylize_markdown'] = true,
+            ['cmp.entry.get_documentation'] = true,
+          },
+        },
+        -- You can add a custom command or keymap to open the messages popup
+        presets = {
+          bottom_search = true, -- Use a classic bottom cmdline for search
+          command_palette = true, -- Position the cmdline and popupmenu together
+          long_message_to_split = true, -- Long messages will be sent to a split
+          inc_rename = false, -- Enable an input dialog for inc-rename.nvim
+          lsp_doc_border = false, -- Disable the popup border for lsp docs
+        },
+        -- Mobile-optimized settings
+        views = {
+          cmdline_popup = {
+            position = {
+              row = 5,
+              col = '50%',
+            },
+            size = {
+              width = 60,
+              height = 'auto',
+            },
+          },
+          popupmenu = {
+            relative = 'editor',
+            position = {
+              row = 8,
+              col = '50%',
+            },
+            size = {
+              width = 60,
+              height = 10,
+            },
+            border = {
+              style = 'rounded',
+              padding = { 0, 1 },
+            },
+            win_options = {
+              winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+            },
+          },
+        },
+        routes = {
+          {
+            filter = {
+              event = 'msg_show',
+              kind = '',
+              find = 'written',
+            },
+            opts = { skip = true },
+          },
+        },
+      })
+    end
+  }
+
+  -- ===========================================
   -- MOBILE TROUBLESHOOTING
   -- ===========================================
 
