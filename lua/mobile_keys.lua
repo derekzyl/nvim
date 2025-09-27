@@ -27,16 +27,14 @@ local function cmap(shortcut, command, opts)
   map('c', shortcut, command, opts)
 end
 
--- Mobile leader key (space for normal/visual, comma for insert)
+-- Mobile leader key (space for all modes)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Space as leader in normal and visual modes
+-- Space as leader in all modes
 vim.keymap.set('n', '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('v', '<Space>', '<Nop>', { silent = true })
-
--- Comma as leader in insert mode (to avoid space conflicts)
-vim.keymap.set('i', ',', '<Nop>', { silent = true })
+vim.keymap.set('i', '<Space>', '<Nop>', { silent = true })
 
 -- ===========================================
 -- MOBILE ESCAPE ALTERNATIVES
@@ -137,7 +135,7 @@ nmap('<leader>e', ':lua vim.diagnostic.open_float()<CR>', { desc = 'Show diagnos
 
 -- Codeium toggle (works in all modes)
 nmap('<leader>ai', ':CodeiumToggle<CR>', { desc = 'Toggle AI (Codeium)' })
-imap(',ai', '<Esc>:CodeiumToggle<CR>a', { desc = 'Toggle AI (Codeium)' })
+imap('<leader>ai', '<Esc>:CodeiumToggle<CR>a', { desc = 'Toggle AI (Codeium)' })
 vmap('<leader>ai', '<Esc>:CodeiumToggle<CR>gv', { desc = 'Toggle AI (Codeium)' })
 
 -- ===========================================
@@ -458,7 +456,7 @@ function MobileKeyHelp()
   print("📱 MOBILE NEOVIM KEYBINDINGS 📱")
   print("==========================================")
   print("Escape alternatives: jj, jk, kj, kk")
-  print("Leader: SPACE (Normal/Visual), COMMA (Insert)")
+  print("Leader: SPACE (All modes)")
   print("")
   print("File Operations:")
   print("  SPACE f    - Find files")
@@ -491,8 +489,7 @@ function MobileKeyHelp()
   print("  SPACE o    - Document symbols")
   print("  SPACE O    - Workspace symbols")
   print("  SPACE S    - Dynamic workspace symbols")
-  print("  SPACE ai   - Toggle AI (Codeium) (Normal/Visual)")
-  print("  ,ai        - Toggle AI (Codeium) (Insert)")
+  print("  SPACE ai   - Toggle AI (Codeium) (All modes)")
   print("")
   print("Insert Mode Shortcuts:")
   print("  Ctrl+S     - Save file")
