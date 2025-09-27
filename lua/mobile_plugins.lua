@@ -51,16 +51,8 @@ return require('packer').startup(function(use)
   }
 
   -- Wakatime (mobile-optimized)
-  use { 
-    'wakatime/vim-wakatime',
-    config = function()
-      -- Mobile-optimized wakatime settings
-      vim.g.wakatime_PythonBinary = '/usr/bin/python3'
-      vim.g.wakatime_CLIPath = '/data/data/com.termux/files/usr/bin/wakatime'
-      vim.g.wakatime_DisableOnStartup = 0
-      vim.g.wakatime_ScreenRedraw = 1
-    end
-  }
+ use 'wakatime/vim-wakatime'
+
 
   -- ===========================================
   -- MOBILE FILE NAVIGATION
@@ -869,8 +861,11 @@ return require('packer').startup(function(use)
       'mfussenegger/nvim-dap',
       'nvim-neotest/nvim-nio',
     },
+    after = 'nvim-dap',
     config = function()
+      local dap = require('dap')
       local dapui = require('dapui')
+      
       dapui.setup({
         icons = { expanded = '▾', collapsed = '▸', current_frame = '▸' },
         mappings = {
@@ -931,17 +926,20 @@ return require('packer').startup(function(use)
         },
       })
       
-      -- Auto open/close dapui
-      local dap = require('dap')
-      dap.listeners.after.event_initialized['dapui_config'] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated['dapui_config'] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited['dapui_config'] = function()
-        dapui.close()
-      end
+      -- Auto open/close dapui with proper error handling
+      vim.defer_fn(function()
+        if dap and dap.listeners then
+          dap.listeners.after.event_initialized['dapui_config'] = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated['dapui_config'] = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited['dapui_config'] = function()
+            dapui.close()
+          end
+        end
+      end, 1000)
     end
   }
 
@@ -1087,6 +1085,7 @@ return require('packer').startup(function(use)
       -- Mobile-optimized Codeium settings
       vim.g.codeium_disable_bindings = 1
       vim.g.codeium_no_map_tab = 1
+      vim.g.codeium_enabled = 0  -- Disable by default to prevent errors
       
       -- Set up keymaps
       vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
@@ -1094,13 +1093,12 @@ return require('packer').startup(function(use)
       vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
       vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
       
-      -- Auto-setup Codeium binary if not present
-      vim.defer_fn(function()
-        if vim.fn['codeium#GetStatusString']() == 'OFF' then
-          print('Codeium: Setting up binary...')
-          vim.cmd('Codeium')
-        end
-      end, 2000) -- Wait 2 seconds after startup
+      -- Manual setup command
+      vim.api.nvim_create_user_command('CodeiumSetup', function()
+        vim.g.codeium_enabled = 1
+        vim.cmd('Codeium')
+        print('Codeium: Enabled. Run :Codeium Auth to authenticate.')
+      end, { desc = 'Enable and setup Codeium' })
     end
   }
 
