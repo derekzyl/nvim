@@ -24,9 +24,6 @@ function tmap(shortcut, command)
   map('t', shortcut, command)
 end
 
--- ensure Space behaves normally in insert mode
-pcall(vim.api.nvim_del_keymap, 'i', '<Space>')
-pcall(vim.api.nvim_set_keymap, 'i', '<Space>', '<Space>', { noremap = true, silent = false })
 
 -- sane regexes
 nmap('/', '/\\v')

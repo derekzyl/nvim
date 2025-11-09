@@ -34,7 +34,6 @@ vim.g.maplocalleader = ' '
 -- Space as leader in all modes
 vim.keymap.set('n', '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('v', '<Space>', '<Nop>', { silent = true })
-vim.keymap.set('i', '<Space>', '<Nop>', { silent = true })
 
 -- ===========================================
 -- MOBILE ESCAPE ALTERNATIVES
