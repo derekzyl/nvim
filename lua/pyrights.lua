@@ -2,29 +2,37 @@
 
 -- this part is telling Neovim to use the lsp server
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'clangd', 'eslint','html' }
+local servers = { 'pyright', 'rust_analyzer', 'ts_ls', 'clangd', 'eslint','html' }
+
+-- Define on_attach function if not already defined
+local on_attach = function(client, bufnr)
+  -- Add any common on_attach logic here
+end
+
 for _, lsp in pairs(servers) do
   if lsp == 'pyright' then
-    require('lspconfig')[lsp].setup{
+    vim.lsp.config(lsp, {
       on_attach=on_attach,
       flags={
-debounce_text_changes=150
+        debounce_text_changes=150
       },
       capabilities=capabilities,
-
-      python = {
-    analysis = {
-      autoSearchPaths = true,
-    }
-    }}
+      settings = {
+        python = {
+          analysis = {
+            autoSearchPaths = true,
+          }
+        }
+      }
+    })
   else
-    require('lspconfig')[lsp].setup {
+    vim.lsp.config(lsp, {
         on_attach = on_attach,
         flags = {
           debounce_text_changes = 150,
         },
         capabilities= capabilities
-    }
+    })
   end 
 end
 

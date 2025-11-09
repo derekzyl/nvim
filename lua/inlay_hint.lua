@@ -4,9 +4,19 @@ local M = {}
 
 local ih = require("inlay-hints")
 
-vim.lsp.config("pyright")
-vim.lsp.config("ts_ls",
-{
+vim.lsp.config("pyright", {
+  on_attach = function(c, b)
+    ih.on_attach(c, b)
+  end,
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+      }
+    }
+  }
+})
+vim.lsp.config("ts_ls", {
   on_attach = function(c, b)
     ih.on_attach(c, b)
   end,
@@ -39,7 +49,7 @@ vim.lsp.config("ts_ls",
 
 
 
-vim.lsp.config("gopls",{
+vim.lsp.config("gopls", {
   on_attach = function(c, b)
     ih.on_attach(c, b)
   end,
