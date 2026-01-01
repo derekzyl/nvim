@@ -529,16 +529,9 @@ return require('packer').startup(function(use)
     'windwp/nvim-ts-autotag',
     event = 'InsertEnter',
     config = function()
-      require('nvim-ts-autotag').setup({
-        -- Mobile-optimized autotag settings
-        enable = true,
-        enable_rename = true,
-        enable_close = true,
-        enable_close_on_slash = true,
-        filetypes = {
-          'html', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue', 'tsx', 'jsx', 'rescript', 'xml', 'php', 'markdown', 'astro', 'glimmer', 'handlebars', 'hbs'
-        }
-      })
+      -- New setup format (migrated from legacy options)
+      -- The new format uses a simpler structure
+      require('nvim-ts-autotag').setup()
     end
   }
 
