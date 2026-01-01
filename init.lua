@@ -7,9 +7,7 @@ require('mobile')
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.lsp.enable('pyright')
-vim.lsp.enable('ts_ls')
-vim.lsp.enable('gopls')
+-- Removed deprecated vim.lsp.enable() calls - LSPs are now configured via lspconfig
 
 -- Load configurations
 require('mobile_plugins')  -- Mobile-optimized plugins
