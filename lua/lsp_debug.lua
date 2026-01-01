@@ -1,6 +1,37 @@
 -- LSP Debugging and Diagnostics
 -- Use :LspDebug to check LSP status
+-- Also provides :LspInfo as an alias if lspconfig command is not available
 
+-- Check LSP status (alternative to :LspInfo)
+vim.api.nvim_create_user_command('LspInfo', function()
+  local clients = vim.lsp.get_active_clients()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local attached_clients = vim.lsp.get_clients({ bufnr = bufnr })
+  
+  print("=== LSP Information ===")
+  print("Active LSP clients: " .. #clients)
+  print("")
+  
+  if #clients > 0 then
+    for _, client in ipairs(clients) do
+      print("✓ " .. client.name .. " (ID: " .. client.id .. ")")
+    end
+  else
+    print("No active LSP clients")
+  end
+  
+  print("")
+  print("Current buffer:")
+  print("  - Filetype: " .. vim.bo.filetype)
+  print("  - Attached clients: " .. #attached_clients)
+  if #attached_clients > 0 then
+    for _, client in ipairs(attached_clients) do
+      print("    ✓ " .. client.name)
+    end
+  end
+end, { desc = 'Show LSP information' })
+
+-- Detailed LSP debugging
 vim.api.nvim_create_user_command('LspDebug', function()
   local clients = vim.lsp.get_active_clients()
   

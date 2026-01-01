@@ -5,11 +5,6 @@
 
 local cmp = require'cmp'
 cmp.setup({
-  -- Enable completion on every keystroke
-  completion = {
-    autocomplete = true,
-    keyword_length = 1,  -- Start completion after 1 character
-  },
   mapping = {
     -- Shift+TAB to go to the Previous Suggested item
     ['<Up>'] = cmp.mapping.select_prev_item(),
