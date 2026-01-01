@@ -20,16 +20,23 @@ local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   
+  -- Set up keybindings for LSP features
+  local opts = { buffer = bufnr, noremap = true, silent = true }
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  
   -- Enable diagnostics (using modern API)
   if client.supports_method('textDocument/publishDiagnostics') then
-    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-      vim.diagnostic.on_publish_diagnostics, {
-        virtual_text = true,
-        signs = true,
-        underline = true,
-        update_in_insert = false,
-      }
-    )
+    vim.diagnostic.config({
+      virtual_text = true,
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+    }, { buffer = bufnr })
   end
   
   -- Enable formatting on save (optional, can be removed if not desired)
@@ -91,7 +98,8 @@ if is_mobile() then
           return vim.fs.dirname(cargo)
         end
         -- Fallback: use current directory if no Cargo.toml found
-        return vim.fs.dirname(fname)
+        local dir = vim.fs.dirname(fname)
+        return dir ~= "" and dir or vim.fn.getcwd()
       end,
       settings = {
         ['rust-analyzer'] = {
@@ -157,10 +165,10 @@ if is_mobile() then
           return vim.fs.dirname(git)
         end
         -- Fallback: use current directory
-        return vim.fs.dirname(fname)
+        local dir = vim.fs.dirname(fname)
+        return dir ~= "" and dir or vim.fn.getcwd()
       end,
     })
-    vim.notify("clangd configured: " .. clangd_path, vim.log.levels.INFO)
   else
     vim.notify("clangd not found. Install with: pkg install clang cmake", vim.log.levels.WARN)
   end
@@ -239,37 +247,5 @@ for type, icon in pairs(signs) do
     vim.fn.sign_define(hl, { text = icon, texthl= hl, numhl = hl })
 end
 
--- Ensure LSPs start when files are opened
--- This autocmd helps ensure LSPs attach to buffers
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'rust', 'cpp', 'c', 'cxx', 'cc', 'h', 'hpp' },
-  callback = function(args)
-    local bufnr = args.buf
-    local filetype = vim.bo[bufnr].filetype
-    
-    -- Check if LSP is already attached
-    local clients = vim.lsp.get_clients({ bufnr = bufnr })
-    if #clients == 0 then
-      -- LSP not attached, try to start it
-      if filetype == 'rust' then
-        local rust_path = '/data/data/com.termux/files/usr/bin/rust-analyzer'
-        if vim.fn.executable(rust_path) == 1 then
-          vim.lsp.start({
-            name = 'rust_analyzer',
-            cmd = { rust_path },
-            root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
-          })
-        end
-      elseif filetype == 'cpp' or filetype == 'c' or filetype == 'cxx' or filetype == 'cc' or filetype == 'h' or filetype == 'hpp' then
-        local clangd_path = '/data/data/com.termux/files/usr/bin/clangd'
-        if vim.fn.executable(clangd_path) == 1 then
-          vim.lsp.start({
-            name = 'clangd',
-            cmd = { clangd_path, '--background-index' },
-            root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
-          })
-        end
-      end
-    end
-  end,
-})
+-- Note: LSPs are automatically started by vim.lsp.config() when files are opened
+-- No need for manual autocmd - it was causing conflicts

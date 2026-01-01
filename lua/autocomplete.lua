@@ -4,6 +4,8 @@
 -- cmp autocomplete 
 
 local cmp = require'cmp'
+
+-- Setup nvim-cmp with proper LSP integration
 cmp.setup({
   mapping = {
     -- Shift+TAB to go to the Previous Suggested item
@@ -28,16 +30,15 @@ cmp.setup({
 
   -- sources are the installed sources that can be used for code suggestions
   -- Priority: LSP first (for intelligent completion), then buffer/other sources
- sources = {
-      { name = 'nvim_lsp', keyword_length = 1 },  -- Reduced keyword_length for faster triggering
-      { name = 'nvim_lsp_signature_help'},
-      { name = 'path' },
-      { name = 'nvim_lua', keyword_length = 2},
-      { name = 'buffer', keyword_length = 2 },
-      { name = 'vsnip' },
-      { name = 'orgmode' },
-      { name = 'luasnip'}, -- For luasnip users.
- },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp', keyword_length = 1 },  -- LSP completion (most important)
+    { name = 'nvim_lsp_signature_help' },      -- Function signatures
+    { name = 'luasnip' },                       -- Snippets
+  }, {
+    { name = 'buffer', keyword_length = 2 },   -- Buffer words
+    { name = 'path' },                         -- File paths
+    { name = 'nvim_lua', keyword_length = 2 },  -- Lua API
+  }),
  snippet = {
     expand = function(args)
         vim.fn["vsnip#anonymous"](args.body)--vim
