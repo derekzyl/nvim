@@ -1,6 +1,7 @@
 
 -- this part is telling Neovim to use the lsp server
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+local capabilities = ok and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities()
 
 -- Check if running on mobile (Termux)
 local function is_mobile()
@@ -89,6 +90,7 @@ if is_mobile() then
         if cargo then
           return vim.fs.dirname(cargo)
         end
+        -- Fallback: use current directory if no Cargo.toml found
         return vim.fs.dirname(fname)
       end,
       settings = {
@@ -102,6 +104,7 @@ if is_mobile() then
         },
       },
     })
+    vim.notify("rust-analyzer configured: " .. rust_analyzer_path, vim.log.levels.INFO)
   else
     vim.notify("rust-analyzer not found. Install with: pkg install rust rust-analyzer", vim.log.levels.WARN)
   end
@@ -153,9 +156,11 @@ if is_mobile() then
         if git then
           return vim.fs.dirname(git)
         end
+        -- Fallback: use current directory
         return vim.fs.dirname(fname)
       end,
     })
+    vim.notify("clangd configured: " .. clangd_path, vim.log.levels.INFO)
   else
     vim.notify("clangd not found. Install with: pkg install clang cmake", vim.log.levels.WARN)
   end
@@ -233,3 +238,38 @@ for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl= hl, numhl = hl })
 end
+
+-- Ensure LSPs start when files are opened
+-- This autocmd helps ensure LSPs attach to buffers
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'rust', 'cpp', 'c', 'cxx', 'cc', 'h', 'hpp' },
+  callback = function(args)
+    local bufnr = args.buf
+    local filetype = vim.bo[bufnr].filetype
+    
+    -- Check if LSP is already attached
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    if #clients == 0 then
+      -- LSP not attached, try to start it
+      if filetype == 'rust' then
+        local rust_path = '/data/data/com.termux/files/usr/bin/rust-analyzer'
+        if vim.fn.executable(rust_path) == 1 then
+          vim.lsp.start({
+            name = 'rust_analyzer',
+            cmd = { rust_path },
+            root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+          })
+        end
+      elseif filetype == 'cpp' or filetype == 'c' or filetype == 'cxx' or filetype == 'cc' or filetype == 'h' or filetype == 'hpp' then
+        local clangd_path = '/data/data/com.termux/files/usr/bin/clangd'
+        if vim.fn.executable(clangd_path) == 1 then
+          vim.lsp.start({
+            name = 'clangd',
+            cmd = { clangd_path, '--background-index' },
+            root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+          })
+        end
+      end
+    end
+  end,
+})
