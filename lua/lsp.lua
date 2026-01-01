@@ -9,7 +9,7 @@ require("mason").setup()
 -- Language servers that work on mobile
 local mobile_servers = {
   'pyright',
-  'tsserver',
+  'ts_ls',
   'eslint',
   'html',
   'lua_ls',
