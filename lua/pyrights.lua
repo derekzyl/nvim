@@ -247,5 +247,63 @@ for type, icon in pairs(signs) do
     vim.fn.sign_define(hl, { text = icon, texthl= hl, numhl = hl })
 end
 
--- Note: LSPs are automatically started by vim.lsp.config() when files are opened
--- No need for manual autocmd - it was causing conflicts
+-- Ensure LSPs start when files are opened
+-- vim.lsp.config() registers the config, but we need to ensure they start
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'rust', 'cpp', 'c', 'cxx', 'cc', 'h', 'hpp' },
+  callback = function(args)
+    local bufnr = args.buf
+    local filetype = vim.bo[bufnr].filetype
+    local filename = vim.api.nvim_buf_get_name(bufnr)
+    
+    -- Skip if file doesn't exist (e.g., new file)
+    if filename == "" or not vim.fn.filereadable(filename) then
+      return
+    end
+    
+    -- Check if LSP is already attached
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    if #clients > 0 then
+      return -- Already attached
+    end
+    
+    -- Start appropriate LSP
+    if filetype == 'rust' and is_mobile() then
+      local rust_path = '/data/data/com.termux/files/usr/bin/rust-analyzer'
+      if vim.fn.executable(rust_path) == 1 then
+        local root_dir = vim.fs.dirname(filename)
+        if root_dir == "" then
+          root_dir = vim.fn.getcwd()
+        end
+        vim.lsp.start({
+          name = 'rust_analyzer',
+          cmd = { rust_path },
+          root_dir = root_dir,
+          capabilities = capabilities,
+          on_attach = on_attach,
+          settings = {
+            ['rust-analyzer'] = {
+              cargo = { allFeatures = true },
+              checkOnSave = { command = "clippy" },
+            },
+          },
+        })
+      end
+    elseif (filetype == 'cpp' or filetype == 'c' or filetype == 'cxx' or filetype == 'cc' or filetype == 'h' or filetype == 'hpp') and is_mobile() then
+      local clangd_path = '/data/data/com.termux/files/usr/bin/clangd'
+      if vim.fn.executable(clangd_path) == 1 then
+        local root_dir = vim.fs.dirname(filename)
+        if root_dir == "" then
+          root_dir = vim.fn.getcwd()
+        end
+        vim.lsp.start({
+          name = 'clangd',
+          cmd = { clangd_path, '--background-index' },
+          root_dir = root_dir,
+          capabilities = capabilities,
+          on_attach = on_attach,
+        })
+      end
+    end
+  end,
+})
