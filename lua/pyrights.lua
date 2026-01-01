@@ -29,26 +29,31 @@ vim.lsp.config('pyright', {
   }
 })
 
--- Rust Analyzer (only on desktop, not mobile)
--- On mobile: Use Treesitter for syntax highlighting + buffer completion
--- Alternative: Use buffer-based completion (nvim-cmp with buffer source)
--- Note: Full LSP features (go-to-definition, diagnostics) won't be available on mobile
-if not is_mobile() then
+-- Rust Analyzer Configuration
+-- On mobile (Termux): Use native Termux-installed rust-analyzer
+-- On desktop: Use Mason-installed version
+if is_mobile() then
+  -- Use native Termux package (installed via: pkg install rust rust-analyzer)
+  vim.lsp.config('rust_analyzer', {
+    cmd = { '/data/data/com.termux/files/usr/bin/rust-analyzer' },
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+      ['rust-analyzer'] = {
+        cargo = {
+          allFeatures = true,
+        },
+        checkOnSave = {
+          command = "clippy",
+        },
+      },
+    },
+  })
+else
+  -- Desktop: Use Mason-installed version
   vim.lsp.config('rust_analyzer', {
     on_attach = on_attach,
     capabilities = capabilities,
-  })
-else
-  -- Mobile fallback: Enhanced buffer completion for Rust
-  -- Treesitter provides syntax highlighting, buffer completion provides code suggestions
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'rust' },
-    callback = function()
-      -- Enable buffer completion (words from current and other buffers)
-      vim.bo.complete = vim.bo.complete .. ',k'
-      -- Set comment string for Rust
-      vim.bo.commentstring = '// %s'
-    end,
   })
 end
 
@@ -58,28 +63,22 @@ vim.lsp.config('ts_ls', {
   capabilities = capabilities,
 })
 
--- Clangd (only on desktop, not mobile)
--- On mobile: Use Treesitter for syntax highlighting + buffer completion
--- Alternative: Use buffer-based completion (nvim-cmp with buffer source)
--- Note: Full LSP features (go-to-definition, diagnostics) won't be available on mobile
-if not is_mobile() then
+-- Clangd Configuration
+-- On mobile (Termux): Use native Termux-installed clangd
+-- On desktop: Use Mason-installed version
+if is_mobile() then
+  -- Use native Termux package (installed via: pkg install clang cmake)
+  vim.lsp.config('clangd', {
+    cmd = { '/data/data/com.termux/files/usr/bin/clangd', '--background-index' },
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+  })
+else
+  -- Desktop: Use Mason-installed version
   vim.lsp.config('clangd', {
     on_attach = on_attach,
     capabilities = capabilities,
-  })
-else
-  -- Mobile fallback: Enhanced buffer completion for C/C++
-  -- Treesitter provides syntax highlighting, buffer completion provides code suggestions
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'c', 'cpp', 'cxx', 'cc', 'h', 'hpp' },
-    callback = function()
-      -- Enable buffer completion (words from current and other buffers)
-      vim.bo.complete = vim.bo.complete .. ',k'
-      -- Set comment string for C/C++
-      vim.bo.commentstring = '// %s'
-      -- Enable better indentation
-      vim.bo.cindent = true
-    end,
   })
 end
 
