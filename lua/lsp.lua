@@ -12,7 +12,7 @@ local mobile_servers = {
   'ts_ls',
   'eslint',
   'html',
-  'lua_ls',
+
   'gopls',
   'cssls',
   'jsonls',

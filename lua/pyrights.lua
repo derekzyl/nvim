@@ -96,26 +96,26 @@ vim.lsp.config('html', {
 })
 
 -- Lua Language Server
-vim.lsp.config('lua_ls', {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        globals = { 'vim' },
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-})
+-- vim.lsp.config('lua_ls', {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   settings = {
+--     Lua = {
+--       runtime = {
+--         version = 'LuaJIT',
+--       },
+--       diagnostics = {
+--         globals = { 'vim' },
+--       },
+--       workspace = {
+--         library = vim.api.nvim_get_runtime_file("", true),
+--       },
+--       telemetry = {
+--         enable = false,
+--       },
+--     },
+--   },
+-- })
 
 -- Go Language Server
 vim.lsp.config('gopls', {
