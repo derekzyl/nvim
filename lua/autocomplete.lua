@@ -5,6 +5,11 @@
 
 local cmp = require'cmp'
 cmp.setup({
+  -- Enable completion on every keystroke
+  completion = {
+    autocomplete = true,
+    keyword_length = 1,  -- Start completion after 1 character
+  },
   mapping = {
     -- Shift+TAB to go to the Previous Suggested item
     ['<Up>'] = cmp.mapping.select_prev_item(),
@@ -27,10 +32,11 @@ cmp.setup({
   },
 
   -- sources are the installed sources that can be used for code suggestions
+  -- Priority: LSP first (for intelligent completion), then buffer/other sources
  sources = {
-      { name = 'path' },
-      { name = 'nvim_lsp', keyword_length = 3 },
+      { name = 'nvim_lsp', keyword_length = 1 },  -- Reduced keyword_length for faster triggering
       { name = 'nvim_lsp_signature_help'},
+      { name = 'path' },
       { name = 'nvim_lua', keyword_length = 2},
       { name = 'buffer', keyword_length = 2 },
       { name = 'vsnip' },

@@ -26,6 +26,7 @@ require('run')
 
 require('pair_bracket')
 require('pyrights')
+require('lsp_debug')  -- LSP debugging utilities
 require('debug')
 require('sitter')
 require('saga')

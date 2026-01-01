@@ -8,11 +8,42 @@ local function is_mobile()
   return term ~= nil
 end
 
--- Define on_attach function if not already defined
+-- Helper function to check if executable exists
+local function executable_exists(path)
+  if not path then return false end
+  return vim.fn.executable(path) == 1
+end
+
+-- Define on_attach function with full LSP features
 local on_attach = function(client, bufnr)
-  -- Add any common on_attach logic here
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  
+  -- Enable diagnostics (using modern API)
+  if client.supports_method('textDocument/publishDiagnostics') then
+    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+      vim.diagnostic.on_publish_diagnostics, {
+        virtual_text = true,
+        signs = true,
+        underline = true,
+        update_in_insert = false,
+      }
+    )
+  end
+  
+  -- Enable formatting on save (optional, can be removed if not desired)
+  if client.supports_method('textDocument/formatting') then
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ async = false })
+      end,
+    })
+  end
+  
+  -- Print LSP attached message for debugging
+  local client_name = client.name
+  vim.notify(string.format("LSP %s attached to buffer %d", client_name, bufnr), vim.log.levels.INFO)
 end
 
 -- Server configurations using vim.lsp.config (new API)
@@ -34,21 +65,46 @@ vim.lsp.config('pyright', {
 -- On desktop: Use Mason-installed version
 if is_mobile() then
   -- Use native Termux package (installed via: pkg install rust rust-analyzer)
-  vim.lsp.config('rust_analyzer', {
-    cmd = { '/data/data/com.termux/files/usr/bin/rust-analyzer' },
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-      ['rust-analyzer'] = {
-        cargo = {
-          allFeatures = true,
-        },
-        checkOnSave = {
-          command = "clippy",
+  -- Try multiple paths to find rust-analyzer
+  local rust_analyzer_paths = {
+    '/data/data/com.termux/files/usr/bin/rust-analyzer',
+    vim.fn.exepath('rust-analyzer'),
+  }
+  
+  local rust_analyzer_path = nil
+  for _, path in ipairs(rust_analyzer_paths) do
+    if path and vim.fn.executable(path) == 1 then
+      rust_analyzer_path = path
+      break
+    end
+  end
+  
+  if rust_analyzer_path then
+    vim.lsp.config('rust_analyzer', {
+      cmd = { rust_analyzer_path },
+      on_attach = on_attach,
+      capabilities = capabilities,
+      root_dir = function(fname)
+        local cargo = vim.fs.find({ 'Cargo.toml' }, { path = fname, upward = true })[1]
+        if cargo then
+          return vim.fs.dirname(cargo)
+        end
+        return vim.fs.dirname(fname)
+      end,
+      settings = {
+        ['rust-analyzer'] = {
+          cargo = {
+            allFeatures = true,
+          },
+          checkOnSave = {
+            command = "clippy",
+          },
         },
       },
-    },
-  })
+    })
+  else
+    vim.notify("rust-analyzer not found. Install with: pkg install rust rust-analyzer", vim.log.levels.WARN)
+  end
 else
   -- Desktop: Use Mason-installed version
   vim.lsp.config('rust_analyzer', {
@@ -68,12 +124,41 @@ vim.lsp.config('ts_ls', {
 -- On desktop: Use Mason-installed version
 if is_mobile() then
   -- Use native Termux package (installed via: pkg install clang cmake)
-  vim.lsp.config('clangd', {
-    cmd = { '/data/data/com.termux/files/usr/bin/clangd', '--background-index' },
-    on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
-  })
+  -- Try multiple paths to find clangd
+  local clangd_paths = {
+    '/data/data/com.termux/files/usr/bin/clangd',
+    vim.fn.exepath('clangd'),
+  }
+  
+  local clangd_path = nil
+  for _, path in ipairs(clangd_paths) do
+    if path and vim.fn.executable(path) == 1 then
+      clangd_path = path
+      break
+    end
+  end
+  
+  if clangd_path then
+    vim.lsp.config('clangd', {
+      cmd = { clangd_path, '--background-index' },
+      on_attach = on_attach,
+      capabilities = capabilities,
+      filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'h', 'hpp' },
+      root_dir = function(fname)
+        local compile_commands = vim.fs.find({ 'compile_commands.json' }, { path = fname, upward = true })[1]
+        if compile_commands then
+          return vim.fs.dirname(compile_commands)
+        end
+        local git = vim.fs.find({ '.git' }, { path = fname, upward = true })[1]
+        if git then
+          return vim.fs.dirname(git)
+        end
+        return vim.fs.dirname(fname)
+      end,
+    })
+  else
+    vim.notify("clangd not found. Install with: pkg install clang cmake", vim.log.levels.WARN)
+  end
 else
   -- Desktop: Use Mason-installed version
   vim.lsp.config('clangd', {
