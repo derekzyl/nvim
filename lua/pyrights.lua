@@ -17,40 +17,37 @@ end
 
 -- Define on_attach function with full LSP features
 local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- Use pcall to catch any errors
+  local ok, err = pcall(function()
+    -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    
+    -- Set up keybindings for LSP features (with error handling)
+    local opts = { buffer = bufnr, noremap = true, silent = true }
+    pcall(vim.keymap.set, 'n', 'gd', vim.lsp.buf.definition, opts)
+    pcall(vim.keymap.set, 'n', 'K', vim.lsp.buf.hover, opts)
+    pcall(vim.keymap.set, 'n', 'gi', vim.lsp.buf.implementation, opts)
+    pcall(vim.keymap.set, 'n', '<leader>rn', vim.lsp.buf.rename, opts)
+    pcall(vim.keymap.set, 'n', '<leader>ca', vim.lsp.buf.code_action, opts)
+    pcall(vim.keymap.set, 'n', 'gr', vim.lsp.buf.references, opts)
+    
+    -- Enable formatting on save (optional, can be removed if not desired)
+    if client.supports_method('textDocument/formatting') then
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        buffer = bufnr,
+        callback = function()
+          pcall(vim.lsp.buf.format, { async = false })
+        end,
+      })
+    end
+  end)
   
-  -- Set up keybindings for LSP features
-  local opts = { buffer = bufnr, noremap = true, silent = true }
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-  
-  -- Enable diagnostics (using modern API)
-  if client.supports_method('textDocument/publishDiagnostics') then
-    vim.diagnostic.config({
-      virtual_text = true,
-      signs = true,
-      underline = true,
-      update_in_insert = false,
-    }, { buffer = bufnr })
+  if not ok then
+    vim.notify("Error in on_attach: " .. tostring(err), vim.log.levels.ERROR)
   end
   
-  -- Enable formatting on save (optional, can be removed if not desired)
-  if client.supports_method('textDocument/formatting') then
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format({ async = false })
-      end,
-    })
-  end
-  
-  -- Print LSP attached message for debugging
-  local client_name = client.name
+  -- Print LSP attached message for debugging (outside pcall to always show)
+  local client_name = client and client.name or "unknown"
   vim.notify(string.format("LSP %s attached to buffer %d", client_name, bufnr), vim.log.levels.INFO)
 end
 
@@ -236,6 +233,14 @@ vim.lsp.config('jsonls', {
 vim.lsp.config('yamlls', {
   on_attach = on_attach,
   capabilities = capabilities,
+})
+
+-- Configure diagnostics globally (not per-buffer in on_attach)
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
 })
 
 -- this is for diagnositcs signs on the line number column
