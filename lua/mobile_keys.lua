@@ -40,9 +40,9 @@ vim.keymap.set('v', '<Space>', '<Nop>', { silent = true })
 -- ===========================================
 -- These are crucial for mobile keyboards where Esc is hard to reach
 imap('jj', '<Esc>')
-imap('jk', '<Esc>')
-imap('kj', '<Esc>')
-imap('kk', '<Esc>')
+-- imap('jk', '<Esc>')
+-- imap('kj', '<Esc>')
+-- imap('kk', '<Esc>')
 
 -- ===========================================
 -- MOBILE NAVIGATION
@@ -431,8 +431,10 @@ if pcall(require, 'which-key') then
     show_help = true,
     triggers = "auto",
     triggers_blacklist = {
-      i = { "j", "k" },
-      v = { "j", "k" },
+      -- i = { "j", "k" },
+      -- v = { "j", "k" },
+      i = { "j" },
+      v = { "j" },
     },
   })
 end
@@ -454,7 +456,8 @@ function MobileKeyHelp()
   print("==========================================")
   print("📱 MOBILE NEOVIM KEYBINDINGS 📱")
   print("==========================================")
-  print("Escape alternatives: jj, jk, kj, kk")
+  -- print("Escape alternatives: jj, jk, kj, kk")
+  print("Escape alternatives: jj")
   print("Leader: SPACE (All modes)")
   print("")
   print("File Operations:")
