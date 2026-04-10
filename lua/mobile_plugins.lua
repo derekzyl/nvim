@@ -494,7 +494,7 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     config = function()
-      require('nvim-treesitter.configs').setup({
+      require('nvim-treesitter.config').setup({
         -- Install parsers on-demand when opening files
         auto_install = true,
         ensure_installed = {
