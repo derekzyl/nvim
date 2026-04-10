@@ -494,7 +494,7 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     config = function()
-      require('nvim-treesitter.configs').setup({
+      require('nvim-treesitter.config').setup({
         -- Install parsers on-demand when opening files
         auto_install = true,
         ensure_installed = {
@@ -1124,41 +1124,41 @@ return require('packer').startup(function(use)
   -- ===========================================
 
   -- Auto-save for mobile
-  use {
-    'Pocco81/auto-save.nvim',
-    config = function()
-      require('auto-save').setup({
-        enabled = true,
-        execution_message = {
-          message = function()
-            return '📱 Auto-saved at ' .. vim.fn.strftime('%H:%M:%S')
-          end,
-          dim = 0.18,
-          cleaning_interval = 1250,
-        },
-        trigger_events = { 'InsertLeave', 'TextChanged' },
-        condition = function(buf)
-          local fn = vim.fn
-          local utils = require('auto-save.utils.data')
-          
-          if fn.getbufvar(buf, '&modifiable') == 1 and
-             utils.not_in(fn.getbufvar(buf, '&filetype'), {}) then
-            return true
-          end
-          return false
-        end,
-        write_all_buffers = false,
-        debounce_delay = 135,
-        callbacks = {
-          enabling = nil,
-          disabling = nil,
-          before_asserting_save = nil,
-          before_saving = nil,
-          after_saving = nil
-        }
-      })
-    end
-  }
+  -- use {
+  --   'Pocco81/auto-save.nvim',
+  --   config = function()
+  --     require('auto-save').setup({
+  --       enabled = true,
+  --       execution_message = {
+  --         message = function()
+  --           return '📱 Auto-saved at ' .. vim.fn.strftime('%H:%M:%S')
+  --         end,
+--         dim = 0.18,
+  --         cleaning_interval = 1250,
+  --       },
+  --       trigger_events = { 'InsertLeave', 'TextChanged' },
+  --       condition = function(buf)
+  --         local fn = vim.fn
+  --         local utils = require('auto-save.utils.data')
+  --
+  --         if fn.getbufvar(buf, '&modifiable') == 1 and
+  --            utils.not_in(fn.getbufvar(buf, '&filetype'), {}) then
+  --           return true
+  --         end
+  --         return false
+  --       end,
+  --       write_all_buffers = false,
+  --       debounce_delay = 135,
+  --       callbacks = {
+  --         enabling = nil,
+  --         disabling = nil,
+  --         before_asserting_save = nil,
+  --         before_saving = nil,
+  --         after_saving = nil
+  --       }
+  --     })
+  --   end
+  -- }
 
   -- ===========================================
   -- BOOTSTRAP PACKER

@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require'nvim-treesitter.config'.setup {
   -- A list of parser names, or "all"
   -- Include C/C++ and Rust for mobile devices (where LSPs aren't available)
   ensure_installed = {  "lua", "rust", 'python', 'typescript', 'c', 'cpp', 'cuda' },

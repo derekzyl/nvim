@@ -117,8 +117,8 @@ if is_mobile() then
   
   -- Mobile escape alternatives (for mobile keyboards)
   vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Escape insert mode' })
-  vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Escape insert mode' })
-  vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Escape insert mode' })
+--  vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Escape insert mode' })
+--  vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Escape insert mode' })
   
   -- Mobile copy/paste
   vim.keymap.set('n', '<leader>y', '"+y', { desc = 'Copy to clipboard' })
@@ -286,7 +286,8 @@ if is_mobile() then
     print("  <leader>r  - Rename symbol")
     print("")
     print("Mobile Tips:")
-    print("  jj, jk, kj - Escape insert mode")
+    -- print("  jj, jk, kj - Escape insert mode")
+    print("  jj         - Escape insert mode")
     print("  <leader>y  - Copy to clipboard")
     print("  <leader>p  - Paste from clipboard")
     print("  <leader>?  - Show this help")

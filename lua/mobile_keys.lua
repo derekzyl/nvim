@@ -40,9 +40,9 @@ vim.keymap.set('v', '<Space>', '<Nop>', { silent = true })
 -- ===========================================
 -- These are crucial for mobile keyboards where Esc is hard to reach
 imap('jj', '<Esc>')
-imap('jk', '<Esc>')
-imap('kj', '<Esc>')
-imap('kk', '<Esc>')
+-- imap('jk', '<Esc>')
+-- imap('kj', '<Esc>')
+-- imap('kk', '<Esc>')
 
 -- ===========================================
 -- MOBILE NAVIGATION
@@ -237,12 +237,12 @@ nmap('<leader>S', ':Telescope lsp_dynamic_workspace_symbols<CR>', { desc = 'Dyna
 -- ===========================================
 
 -- VSCode-style clipboard operations
-nmap('<C-c>', '"+y', { desc = 'Copy to clipboard' })
-vmap('<C-c>', '"+y', { desc = 'Copy to clipboard' })
-nmap('<C-v>', '"+p', { desc = 'Paste from clipboard' })
-vmap('<C-v>', '"+p', { desc = 'Paste from clipboard' })
-nmap('<C-x>', '"+d', { desc = 'Cut to clipboard' })
-vmap('<C-x>', '"+d', { desc = 'Cut to clipboard' })
+-- nmap('<C-c>', '"+y', { desc = 'Copy to clipboard' })
+-- vmap('<C-c>', '"+y', { desc = 'Copy to clipboard' })
+-- nmap('<C-v>', '"+p', { desc = 'Paste from clipboard' })
+-- vmap('<C-v>', '"+p', { desc = 'Paste from clipboard' })
+-- nmap('<C-x>', '"+d', { desc = 'Cut to clipboard' })
+-- vmap('<C-x>', '"+d', { desc = 'Cut to clipboard' })
 
 -- VSCode-style select all
 nmap('<C-a>', 'ggVG', { desc = 'Select all' })
@@ -431,8 +431,10 @@ if pcall(require, 'which-key') then
     show_help = true,
     triggers = "auto",
     triggers_blacklist = {
-      i = { "j", "k" },
-      v = { "j", "k" },
+      -- i = { "j", "k" },
+      -- v = { "j", "k" },
+      i = { "j" },
+      v = { "j" },
     },
   })
 end
@@ -454,7 +456,8 @@ function MobileKeyHelp()
   print("==========================================")
   print("📱 MOBILE NEOVIM KEYBINDINGS 📱")
   print("==========================================")
-  print("Escape alternatives: jj, jk, kj, kk")
+  -- print("Escape alternatives: jj, jk, kj, kk")
+  print("Escape alternatives: jj")
   print("Leader: SPACE (All modes)")
   print("")
   print("File Operations:")
@@ -503,12 +506,12 @@ function MobileKeyHelp()
   print("  Ctrl+G     - Document symbols")
   print("  Alt+A      - Toggle AI (Codeium)")
   print("")
-  print("VSCode Style Copy/Paste:")
-  print("  Ctrl+C     - Copy to clipboard")
-  print("  Ctrl+V     - Paste from clipboard")
-  print("  Ctrl+X     - Cut to clipboard")
-  print("  Ctrl+A     - Select all")
-  print("")
+  -- print("VSCode Style Copy/Paste:")
+  -- print("  Ctrl+C     - Copy to clipboard")
+  -- print("  Ctrl+V     - Paste from clipboard")
+  -- print("  Ctrl+X     - Cut to clipboard")
+  -- print("  Ctrl+A     - Select all")
+  -- print("")
   print("VSCode Style Undo/Redo:")
   print("  Ctrl+Z     - Undo")
   print("  Ctrl+Y     - Redo")

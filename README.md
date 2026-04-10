@@ -28,7 +28,8 @@ A comprehensive, mobile-optimized Neovim configuration designed specifically for
 
 ### **Mobile Keybindings**
 - **Leader Key**: `Space` (easy to reach on mobile keyboards)
-- **Escape Alternatives**: `jj`, `jk`, `kj`, `kk` (no need to reach Esc)
+<!-- - **Escape Alternatives**: `jj`, `jk`, `kj`, `kk` (no need to reach Esc) -->
+- **Escape Alternatives**: `jj` (no need to reach Esc)
 - **Simplified Shortcuts**: Single key or simple combinations
 - **Touch-Friendly**: Large, easy-to-tap key combinations
 
@@ -90,9 +91,9 @@ The configuration automatically detects if you're running in Termux and applies 
 | Key | Action | Description |
 |-----|--------|-------------|
 | `jj` | Escape | Exit insert mode |
-| `jk` | Escape | Exit insert mode |
+<!-- | `jk` | Escape | Exit insert mode |
 | `kj` | Escape | Exit insert mode |
-| `kk` | Escape | Exit insert mode |
+| `kk` | Escape | Exit insert mode | -->
 
 ## 🎨 Mobile Themes
 
